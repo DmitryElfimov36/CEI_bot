@@ -1,10 +1,11 @@
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 
 
-button_start = KeyboardButton(text='Составление декларации')
-button_search = KeyboardButton(text='Поиск')
+button_accounting = KeyboardButton(text='Бухгалтерский учет')
+button_tax_accountiong = KeyboardButton(text='Налоговый учет')
+button_times_services = KeyboardButton(text='Разовые услуги')
 button_help = KeyboardButton(text='Помощь')
 
-kb_client = ReplyKeyboardMarkup(resize_keyboard=True)
+kb_first_menu = ReplyKeyboardMarkup(resize_keyboard=True)
 
-kb_client.add(button_start).add(button_search).insert(button_help)
+kb_first_menu.add(button_accounting).add(button_tax_accountiong).add(button_times_services).insert(button_help)
