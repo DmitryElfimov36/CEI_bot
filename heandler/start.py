@@ -8,7 +8,8 @@ from aiogram.dispatcher.filters.state import State, StatesGroup
 
 
 async def bot_start(message: types.Message):
-    await bot.send_message(message.chat.id, md.text("Здравствуйте! Выберите интересующую категорию"), reply_markup=keyboard.kb_client)
+    await bot.send_message(message.chat.id, md.text("Здравствуйте! Выберите интересующую категорию"),
+                           reply_markup=keyboard.kb_first_menu)
 
 
 def register_handlers_start(db: Dispatcher):

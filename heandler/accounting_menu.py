@@ -1,0 +1,10 @@
+# def register_handlers_search(db: Dispatcher):
+#     db.register_message_handler(start_command, commands=['Составление декларации'])
+#     db.register_message_handler(price, commands=['Стоимость'])
+#     db.register_message_handler(documents, commands=['Какие документы нужны'])
+#     db.register_message_handler(commands=['Ведение бухгалтерского учета'])
+#     db.register_message_handler(commands=['Восстановление бухгалтерского учета'])
+#     db.register_message_handler(commands=['Постановка бухгалтерского учета'])
+#     db.register_message_handler(commands=['Постановка учета 1С'])
+#     db.register_message_handler(commands=['Исправление ошибок'])
+#     db.register_message_handler(commands=['Консультационные услуги'])
