@@ -8,4 +8,4 @@ button_help = KeyboardButton(text='Помощь')
 
 kb_first_menu = ReplyKeyboardMarkup(resize_keyboard=True)
 
-kb_first_menu.add(button_accounting).add(button_tax_accountiong).add(button_times_services).insert(button_help)
+kb_first_menu.insert(button_accounting).insert(button_tax_accountiong).insert(button_times_services).row(button_help)
