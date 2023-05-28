@@ -6,7 +6,8 @@ button_staging = KeyboardButton(text='Постановка бухгалтерс�
 button_1c = KeyboardButton(text='Постановка учета 1С')
 button_correction = KeyboardButton(text='Исправление ошибок')
 button_consultation = KeyboardButton(text='Консультационные услуги')
+button_back_acc = KeyboardButton(text='Назад')
 kb_acc = ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
 
-kb_acc.add(button_conducting).add(button_recovery).add(button_staging).add(button_1c).add(button_correction).\
-    add(button_consultation)
+kb_acc.insert(button_conducting).insert(button_recovery).row(button_staging).insert(button_1c).row(button_correction).\
+    insert(button_consultation).row(button_back_acc)

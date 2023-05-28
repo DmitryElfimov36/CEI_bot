@@ -1,1 +1,1 @@
-from keyboard import keyboard, kb_accounting
+from keyboard import keyboard, kb_accounting, contact
