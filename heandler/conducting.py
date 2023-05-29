@@ -3,15 +3,20 @@ import aiogram.utils.markdown as md
 from aiogram import types, Dispatcher
 from aiogram.dispatcher.filters.state import State, StatesGroup
 from aiogram.dispatcher import FSMContext
+from aiogram.types import CallbackQuery, ReplyKeyboardMarkup, KeyboardButton
+from scipy.integrate._ivp.ivp import MESSAGES
+
+from database import sqlite_db
 from main import db, bot
 from keyboard.contact import phone_number
 from keyboard.keyboard import kb_first_menu
 from keyboard.kb_bot_link import url
+from keyboard.kb_conducting import kb_conducting
 
 
-class PhoneandBot(StatesGroup):
+class PhoneCond(StatesGroup):
     application_cond_state = State()
-    phone_cond_state = State()
+    contact_cond = State()
 
 
 @db.message_handler(text='Описание (ведение бухучета)')
@@ -55,13 +60,23 @@ async def rate_cond(message: types.Message):
 
 @db.message_handler(text='Оставить заявку на услугу')
 async def application_cond(message: types.Message):
-    await PhoneandBot.application_cond_state.set()
+    await PhoneCond.application_cond_state.set()
     await bot.send_message(message.chat.id, "Для перехода в чат нажмите на кнопку ниже:", reply_markup=url)
 
 
-@db.message_handler(text='Я хочу, чтобы со мной связались')
-async def contact_cond(message: types.Message):
-    await bot.send_message(message.chat.id, 'Спасибо. С вами свяжутся')
+@db.callback_query_handler(text="Я хочу, чтобы со мной связались (бухучет)")
+async def contact_cond(query: CallbackQuery):
+    await bot.send_message(query.from_user.id, MESSAGES["send_contact_cond"], reply_markup=kb_conducting, parse_mode="MarkdownV2")
+
+
+@db.message_handler(content_types=types.ContentTypes.ANY)
+async def contact_handler_cond(message: types.Message, state: FSMContext):
+    us_id = message.from_user.id
+    user_name = message.from_user.first_name
+    phone_number = message.contact.phone_number
+    button = 'Ведение бухгалерского учета'
+    await sqlite_db.db_table_val(us_id=us_id, user_name=user_name, phone_number=phone_number, button=button)
+    await state.finish()
 
 
 @db.message_handler(text='Назад')
@@ -73,5 +88,5 @@ def register_handlers_search(db: Dispatcher):
     db.register_message_handler(description_cond, commands=['Описание (ведение бухучета)'])
     db.register_message_handler(rate_cond, commands=['Тарифы (ведение бухучета)'])
     db.register_message_handler(application_cond, commands=['Оставить заявку на услугу'])
-    db.register_message_handler(contact_cond, commands=['Я хочу, чтобы со мной связались'])
+    db.register_message_handler(contact_cond, commands=['Я хочу, чтобы со мной связались (бухучет)'])
     db.register_message_handler(back_cond, commands=['Назад'])
