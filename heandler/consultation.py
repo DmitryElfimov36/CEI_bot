@@ -3,14 +3,18 @@ import aiogram.utils.markdown as md
 from aiogram import types, Dispatcher
 from aiogram.dispatcher.filters.state import State, StatesGroup
 from aiogram.dispatcher import FSMContext
+from aiogram.types import CallbackQuery
+from scipy.integrate._ivp.ivp import MESSAGES
+
+from database import sqlite_db
 from main import db, bot
-from keyboard.contact import phone_number
+from keyboard.kb_consultation import kb_consultation
 from keyboard.keyboard import kb_first_menu
 from keyboard.kb_bot_link import url
 
 
-class Form_food(StatesGroup):
-    country = State()
+class PhoneCons(StatesGroup):
+    contact_cons = State()
     city = State()
 
 
@@ -61,14 +65,24 @@ async def rate_cons(message: types.Message):
     await bot.send_message(message.chat.id, md.text(f"Здесь будут ЦЕНЫ КОНСУЛЬТАЦИЙ"))
 
 
-@db.message_handler(text='Оставить заявку на услугу (консультация)')
+@db.message_handler(text='Оставить заявку на услугу')
 async def application_cons(message: types.Message):
     await bot.send_message(message.chat.id, "Для перехода в чат нажмите на кнопку ниже:", reply_markup=url)
 
 
-@db.message_handler(text='Я хочу, чтобы со мной связались (консультация)')
-async def contact_cons(message: types.Message):
-    await bot.send_message(message.chat.id, 'Спасибо. С вами свяжутся')
+@db.callback_query_handler(text="Я хочу, чтобы со мной связались (консультация)", state=PhoneCons.contact_cons)
+async def contact_cons(query: CallbackQuery):
+    await bot.send_message(query.from_user.id, MESSAGES["send_contact_cons"], reply_markup=kb_consultation, parse_mode="MarkdownV2")
+
+
+@db.message_handler(content_types=types.ContentTypes.ANY)
+async def contact_handler_cons(message: types.Message, state: FSMContext):
+    us_id = message.from_user.id
+    user_name = message.from_user.first_name
+    phone_number = message.contact.phone_number
+    button = 'Консультационные услуги'
+    await sqlite_db.db_table_val(us_id=us_id, user_name=user_name, phone_number=phone_number, button=button)
+    await state.finish()
 
 
 @db.message_handler(text='Назад')
@@ -80,5 +94,5 @@ def register_handlers_search(db: Dispatcher):
     db.register_message_handler(description_cons, commands=['Описание (консультация)'])
     db.register_message_handler(rate_cons, commands=['Тарифы (консультация)'])
     db.register_message_handler(application_cons, commands=['Оставить заявку на услугу'])
-    db.register_message_handler(contact_cons, commands=['Я хочу, чтобы со мной связались'])
+    db.register_message_handler(contact_cons, commands=['Я хочу, чтобы со мной связались (консультация)'])
     db.register_message_handler(back_cons, commands=['Назад'])
