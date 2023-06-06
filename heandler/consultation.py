@@ -3,12 +3,12 @@ import aiogram.utils.markdown as md
 from aiogram import types, Dispatcher
 from aiogram.dispatcher.filters.state import State, StatesGroup
 from aiogram.dispatcher import FSMContext
-from aiogram.types import CallbackQuery
+from aiogram.types import CallbackQuery, message
 from scipy.integrate._ivp.ivp import MESSAGES
 
 from database import sqlite_db
 from main import db, bot
-from keyboard.kb_consultation import kb_consultation
+from keyboard.kb_consultation import kb_consultation, button_contact_cons
 from keyboard.keyboard import kb_first_menu
 from keyboard.kb_bot_link import url
 
@@ -70,19 +70,21 @@ async def application_cons(message: types.Message):
     await bot.send_message(message.chat.id, "Для перехода в чат нажмите на кнопку ниже:", reply_markup=url)
 
 
-@db.callback_query_handler(text="Я хочу, чтобы со мной связались (консультация)", state=PhoneCons.contact_cons)
-async def contact_cons(query: CallbackQuery):
-    await bot.send_message(query.from_user.id, MESSAGES["send_contact_cons"], reply_markup=kb_consultation, parse_mode="MarkdownV2")
+@db.message_handler(commands=["Я хочу, чтобы со мной связались"])
+async def contact_cons(message: types.Message):
+    await bot.send_message(message.chat.id, 'Номер телефона', reply_markup=button_contact_cons)
+    await PhoneCons.contact_cons.set()
 
 
-@db.message_handler(content_types=types.ContentTypes.ANY)
+@db.message_handler(content_types=['contact'])
 async def contact_handler_cons(message: types.Message, state: FSMContext):
-    us_id = message.from_user.id
-    user_name = message.from_user.first_name
-    phone_number = message.contact.phone_number
-    button = 'Консультационные услуги'
-    await sqlite_db.db_table_val(us_id=us_id, user_name=user_name, phone_number=phone_number, button=button)
-    await state.finish()
+    if message.contact is not None:
+        us_id_cons = message.from_user.id
+        user_name_cons = message.from_user.first_name
+        phone_number_cons = message.contact.phone_number
+        button_cons = 'Консультационные услуги'
+        await sqlite_db.db_table_val(us_id=us_id_cons, user_name=user_name_cons, phone_number=phone_number_cons)
+        await state.finish()
 
 
 @db.message_handler(text='Назад')
@@ -95,4 +97,5 @@ def register_handlers_search(db: Dispatcher):
     db.register_message_handler(rate_cons, commands=['Тарифы (консультация)'])
     db.register_message_handler(application_cons, commands=['Оставить заявку на услугу'])
     db.register_message_handler(contact_cons, commands=['Я хочу, чтобы со мной связались (консультация)'])
+    db.register_message_handler(contact_handler_cons, content_types=['contact'], state=PhoneCons.contact_cons)
     db.register_message_handler(back_cons, commands=['Назад'])

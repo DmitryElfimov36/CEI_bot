@@ -11,7 +11,7 @@ from main import db, bot
 from keyboard.contact import phone_number
 from keyboard.keyboard import kb_first_menu
 from keyboard.kb_bot_link import url
-from keyboard.kb_conducting import kb_conducting
+from keyboard.kb_conducting import button_contact_cond
 
 
 class PhoneCond(StatesGroup):
@@ -64,19 +64,21 @@ async def application_cond(message: types.Message):
     await bot.send_message(message.chat.id, "Для перехода в чат нажмите на кнопку ниже:", reply_markup=url)
 
 
-@db.callback_query_handler(text="Я хочу, чтобы со мной связались (бухучет)")
-async def contact_cond(query: CallbackQuery):
-    await bot.send_message(query.from_user.id, MESSAGES["send_contact_cond"], reply_markup=kb_conducting, parse_mode="MarkdownV2")
+@db.message_handler(commands=["Я хочу, чтобы со мной связались (бухучет)"])
+async def contact_cond(message: types.Message):
+    await bot.send_message(message.chat.id, 'Номер телефона', reply_markup=button_contact_cond)
+    await PhoneCond.next()
 
 
-@db.message_handler(content_types=types.ContentTypes.ANY)
+@db.message_handler(content_types=['contact'])
 async def contact_handler_cond(message: types.Message, state: FSMContext):
-    us_id = message.from_user.id
-    user_name = message.from_user.first_name
-    phone_number = message.contact.phone_number
-    button = 'Ведение бухгалерского учета'
-    await sqlite_db.db_table_val(us_id=us_id, user_name=user_name, phone_number=phone_number, button=button)
-    await state.finish()
+    if message.contact is not None:
+        us_id_cond = message.from_user.id
+        user_name_cond = message.from_user.first_name
+        phone_number_cond = message.contact.phone_number
+        button_cond = 'Ведение бухгалерского учета'
+        await sqlite_db.db_table_val(us_id=us_id_cond, user_name=user_name_cond, phone_number=phone_number_cond)
+        await state.finish()
 
 
 @db.message_handler(text='Назад')
@@ -89,4 +91,5 @@ def register_handlers_search(db: Dispatcher):
     db.register_message_handler(rate_cond, commands=['Тарифы (ведение бухучета)'])
     db.register_message_handler(application_cond, commands=['Оставить заявку на услугу'])
     db.register_message_handler(contact_cond, commands=['Я хочу, чтобы со мной связались (бухучет)'])
+    db.register_message_handler(contact_handler_cond, content_types=['contact'], state=PhoneCond.contact_cond)
     db.register_message_handler(back_cond, commands=['Назад'])

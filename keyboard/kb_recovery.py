@@ -5,7 +5,7 @@ button_description_rec = KeyboardButton(text='Описание (восстано
 button_rate_rec = KeyboardButton(text='Тарифы (восстановление бухучета)')
 button_application_rec = KeyboardButton(text='Оставить заявку на услугу')
 button_contact_rec = KeyboardButton(text='Я хочу, чтобы со мной связались', request_contact=True)
-button_back_rec = KeyboardButton(text='Назад')
+button_back_rec = KeyboardButton(text='Главное меню')
 
 
 kb_recovery = ReplyKeyboardMarkup(resize_keyboard=True)

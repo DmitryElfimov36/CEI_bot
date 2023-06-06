@@ -3,15 +3,18 @@ import aiogram.utils.markdown as md
 from aiogram import types, Dispatcher
 from aiogram.dispatcher.filters.state import State, StatesGroup
 from aiogram.dispatcher import FSMContext
+
+from database import sqlite_db
+from keyboard.kb_correction import button_contact_corr
 from main import db, bot
 from keyboard.contact import phone_number
 from keyboard.keyboard import kb_first_menu
 from keyboard.kb_bot_link import url
 
 
-class PhoneandBot(StatesGroup):
+class PhoneCorr(StatesGroup):
     application_cond_state = State()
-    phone_cond_state = State()
+    contact_corr = State()
 
 
 @db.message_handler(text='Описание (исправление ошибок)')
@@ -47,9 +50,21 @@ async def application_corr(message: types.Message):
     await bot.send_message(message.chat.id, "Для перехода в чат нажмите на кнопку ниже:", reply_markup=url)
 
 
-@db.message_handler(text='Я хочу, чтобы со мной связались')
+@db.message_handler(commands=["Я хочу, чтобы со мной связались"])
 async def contact_corr(message: types.Message):
-    await bot.send_message(message.chat.id, 'Спасибо. С вами свяжутся')
+    await bot.send_message(message.chat.id, 'Номер телефона', reply_markup=button_contact_corr)
+    await PhoneCorr.contact_corr.set()
+
+
+@db.message_handler(content_types=['contact'])
+async def contact_handler_corr(message: types.Message, state: FSMContext):
+    if message.contact is not None:
+        us_id_corr = message.from_user.id
+        user_name_corr = message.from_user.first_name
+        phone_number_corr = message.contact.phone_number
+        button_cons = 'Исправление ошибок'
+        await sqlite_db.db_table_val(us_id=us_id_corr, user_name=user_name_corr, phone_number=phone_number_corr)
+        await state.finish()
 
 
 @db.message_handler(text='Назад')

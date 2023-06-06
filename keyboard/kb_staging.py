@@ -5,7 +5,7 @@ button_description_stag = KeyboardButton(text='Описание (постано�
 button_rate_stag = KeyboardButton(text='Тарифы (постановка бухучета)')
 button_application_stag = KeyboardButton(text='Оставить заявку на услугу')
 button_contact_stag = KeyboardButton(text='Я хочу, чтобы со мной связались', request_contact=True)
-button_back_stag = KeyboardButton(text='Назад')
+button_back_stag = KeyboardButton(text='Главное меню')
 
 kb_staging = ReplyKeyboardMarkup(resize_keyboard=True)
 

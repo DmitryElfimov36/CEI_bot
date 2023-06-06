@@ -53,7 +53,7 @@ async def consultation_acc(message: types.Message):
     await bot.send_message(message.chat.id, 'Консультационные услуги', reply_markup=kb_consultation)
 
 
-@db.message_handler(text='Назад')
+@db.message_handler(text='Главное меню')
 async def back_acc(message: types.Message):
     await bot.send_message(message.chat.id, 'Главное меню', reply_markup=kb_first_menu)
 
@@ -65,4 +65,4 @@ def register_handlers_accounting(db: Dispatcher):
     db.register_message_handler(staging_1c_acc, commands=['Постановка учета 1С'])
     db.register_message_handler(correction_acc, commands=['Исправление ошибок'])
     db.register_message_handler(consultation_acc, commands=['Консультационные услуги'])
-    db.register_message_handler(back_acc, commands=['Назад'])
+    db.register_message_handler(back_acc, commands=['Главное меню'])

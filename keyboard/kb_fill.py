@@ -4,7 +4,7 @@ button_description_fill = KeyboardButton(text='Описание (заполне�
 button_rate_fill = KeyboardButton(text='Тарифы (заполнение документов)')
 button_application_fill = KeyboardButton(text='Оставить заявку на услугу')
 button_contact_fill = KeyboardButton(text='Я хочу, чтобы со мной связались', request_contact=True)
-button_back_fill = KeyboardButton(text='Назад')
+button_back_fill = KeyboardButton(text='Главное меню')
 
 kb_fill = ReplyKeyboardMarkup(resize_keyboard=True)
 
