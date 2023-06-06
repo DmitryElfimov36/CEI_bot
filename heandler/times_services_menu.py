@@ -24,7 +24,7 @@ async def recovery_ts(message: types.Message):
     await bot.send_message(message.chat.id, 'Восстановление бухгалтерского учета', reply_markup=kb_null)
 
 
-@db.message_handler(text='Назад')
+@db.message_handler(text='Главное меню')
 async def back_ts(message: types.Message):
     await bot.send_message(message.chat.id, 'Главное меню', reply_markup=kb_first_menu)
 
@@ -32,4 +32,4 @@ async def back_ts(message: types.Message):
 def register_handlers_time_services(db: Dispatcher):
     db.register_message_handler(conducting_ts, commands=['Ведение бухгалтерского учета'])
     db.register_message_handler(recovery_ts, commands=['Восстановление бухгалтерского учета'])
-    db.register_message_handler(back_ts, commands=['Назад'])
+    db.register_message_handler(back_ts, commands=['Главное меню'])

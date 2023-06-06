@@ -31,7 +31,7 @@ async def staging_tax(message: types.Message):
     await bot.send_message(message.chat.id, 'Внутренний аудит налогового учета', reply_markup=kb_audit)
 
 
-@db.message_handler(text='🔙Назад')
+@db.message_handler(text='Главное меню')
 async def back_tax(message: types.Message):
     await bot.send_message(message.chat.id, 'Главное меню', reply_markup=kb_first_menu)
 
@@ -40,4 +40,4 @@ def register_handlers_tax(db: Dispatcher):
     db.register_message_handler(conducting_tax, commands=['Ведение бухгалтерского учета'])
     db.register_message_handler(recovery_tax, commands=['Восстановление бухгалтерского учета'])
     db.register_message_handler(staging_tax, commands=['Постановка бухгалтерского учета'])
-    db.register_message_handler(back_tax, commands=['🔙Назад'])
+    db.register_message_handler(back_tax, commands=['Главное меню'])
