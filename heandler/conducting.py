@@ -64,7 +64,7 @@ async def application_cond(message: types.Message):
     await bot.send_message(message.chat.id, "Для перехода в чат нажмите на кнопку ниже:", reply_markup=url)
 
 
-@db.message_handler(commands=["Я хочу, чтобы со мной связались (бухучет)"])
+@db.message_handler(commands=["Я хочу, чтобы со мной связались"])
 async def contact_cond(message: types.Message):
     await bot.send_message(message.chat.id, 'Номер телефона', reply_markup=button_contact_cond)
     await PhoneCond.next()
@@ -90,6 +90,6 @@ def register_handlers_search(db: Dispatcher):
     db.register_message_handler(description_cond, commands=['Описание (ведение бухучета)'])
     db.register_message_handler(rate_cond, commands=['Тарифы (ведение бухучета)'])
     db.register_message_handler(application_cond, commands=['Оставить заявку на услугу'])
-    db.register_message_handler(contact_cond, commands=['Я хочу, чтобы со мной связались (бухучет)'])
+    db.register_message_handler(contact_cond, commands=['Я хочу, чтобы со мной связались'])
     db.register_message_handler(contact_handler_cond, content_types=['contact'], state=PhoneCond.contact_cond)
     db.register_message_handler(back_cond, commands=['Назад'])
