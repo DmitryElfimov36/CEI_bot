@@ -1,1 +1,1 @@
-BOT_TOKEN = '6186940898:AAEzs39iBhh37cGG7OkTvrmhly34yTDEMnw'
+BOT_TOKEN = 'Здесь будет токен'
