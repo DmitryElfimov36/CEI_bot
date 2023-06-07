@@ -3,7 +3,7 @@ from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 button_description_cond = KeyboardButton(text='Описание (ведение бухучета)')
 button_rate_cond = KeyboardButton(text='Тарифы (ведение бухучета)')
 button_application_cond = KeyboardButton(text='Оставить заявку на услугу')
-button_contact_cond = KeyboardButton(text='Я хочу, чтобы со мной связались (бухучет)', request_contact=True)
+button_contact_cond = KeyboardButton(text='Я хочу, чтобы со мной связались', request_contact=True)
 button_back_conducting = KeyboardButton(text='Главное меню')
 
 kb_conducting = ReplyKeyboardMarkup(resize_keyboard=True)

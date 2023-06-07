@@ -5,7 +5,7 @@ button_description_tab_ip = KeyboardButton(text='Описание (Налого�
 button_rate_tab_ip = KeyboardButton(text='Тарифы (Налоговый учет для ИП)')
 button_application_tab_ip = KeyboardButton(text='Оставить заявку на услугу')
 button_contact_tab_ip = KeyboardButton(text='Я хочу, чтобы со мной связались', request_contact=True)
-button_back_tab_ip = KeyboardButton(text='Назад')
+button_back_tab_ip = KeyboardButton(text='Главное меню')
 
 
 kb_tab_ip = ReplyKeyboardMarkup(resize_keyboard=True)

@@ -5,7 +5,7 @@ button_description_tab_ooo = KeyboardButton(text='Описание (Налого
 button_rate_tab_ooo = KeyboardButton(text='Тарифы (Налоговый учет для ООО)')
 button_application_tab_ooo = KeyboardButton(text='Оставить заявку на услугу')
 button_contact_tab_ooo = KeyboardButton(text='Я хочу, чтобы со мной связались', request_contact=True)
-button_back_tab_ooo = KeyboardButton(text='Назад')
+button_back_tab_ooo = KeyboardButton(text='Главное меню')
 
 
 kb_tab_ooo = ReplyKeyboardMarkup(resize_keyboard=True)
