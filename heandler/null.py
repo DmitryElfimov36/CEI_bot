@@ -24,7 +24,7 @@ async def description_null(message: types.Message):
 
 @db.message_handler(text='Тарифы (Нулевая отчетность)')
 async def rate_null(message: types.Message):
-    await bot.send_message(message.chat.id, md.text(f"Здесь будут ЦЕНЫ НУЛ ОТЧЕТ"))
+    await bot.send_message(message.chat.id, md.text(f"Стоимость нулевой отчетности: <b>от 1380 руб/мес</b>"))
 
 
 @db.message_handler(text='Оставить заявку на услугу')
