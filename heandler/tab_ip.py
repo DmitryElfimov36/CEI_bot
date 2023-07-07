@@ -24,7 +24,7 @@ async def description_staging_ip(message: types.Message):
 
 @db.message_handler(text='Тарифы (Налоговый учет для ИП)')
 async def rate_staging_ip(message: types.Message):
-    await bot.send_message(message.chat.id, md.text(f"Здесь будут ЦЕНЫ УЧЕТ ИП"))
+    await bot.send_message(message.chat.id, md.text(f"Налоговый учет ИП: <b>от 1 200 руб/мес</b>"))
 
 
 @db.message_handler(text='Оставить заявку на услугу (Налоговый учет для ИП)')

@@ -24,7 +24,8 @@ async def description_fill(message: types.Message):
 
 @db.message_handler(text='Тарифы (заполнение документов)')
 async def rate_fill(message: types.Message):
-    await bot.send_message(message.chat.id, md.text(f"Здесь будут ЦЕНЫ ЗАП ДЕКЛ"))
+    await bot.send_message(message.chat.id, md.text(f"Стоимость заполнения деклараций, заявлений, справок: "
+                                                    f"<b>от 900 руб/шт</b>"))
 
 
 @db.message_handler(text='Оставить заявку на услугу')
